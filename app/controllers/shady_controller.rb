@@ -7,7 +7,7 @@ class ShadyController < ApplicationController
       pref.save!
     end
 
-    redirect_to :back
+    redirect_back(fallback_location: home_path)
   end
 
   def destroy
@@ -16,7 +16,7 @@ class ShadyController < ApplicationController
       pref.save!
     end
 
-    redirect_to :back
+    redirect_back(fallback_location: home_path)
   end
 
   private

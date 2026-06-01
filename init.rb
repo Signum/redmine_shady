@@ -1,3 +1,6 @@
+lib_path = File.expand_path('lib', __dir__)
+$LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
+
 require 'redmine_shady'
 
 Redmine::Plugin.register :redmine_shady do
@@ -5,6 +8,7 @@ Redmine::Plugin.register :redmine_shady do
   author "Ralph Gutkowski"
   description "Temporarily disable sending notifications triggered by user."
   version '0.7.0'
+  requires_redmine '6.0'
   url 'https://github.com/rgtk/redmine_shady'
   author_url 'https://github.com/rgtk'
 

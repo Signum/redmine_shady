@@ -1,0 +1,4 @@
+<% style = 'margin: 0; padding: 10px; border-width: 0 0 2px; background-image: none' %>
+<% link = link_to l(:button_cancel), { controller: 'shady', action: 'destroy' },
+                  method: :delete, style: 'float: right' %>
+<div id="shady-bar" class="flash error" style="<%= style %>"><%= link %><%= l(:notice_shady_mode) %></div>

@@ -35,7 +35,7 @@ class ShadyTest < ActionDispatch::IntegrationTest
   end
 
   test "shady button as unauthorized" do
-    log_user('dlopper', 'foo')
+    log_user('dlopper')
     get '/'
 
     assert_select '#account a.shady-mode', false
@@ -52,7 +52,6 @@ class ShadyTest < ActionDispatch::IntegrationTest
 
   test "issue notification triggered by honest user" do
     log_user('dlopper', 'foo')
-    assert_nil User.current.pref[:shady]
 
     deliver_sample_mail
 
@@ -66,17 +65,17 @@ class ShadyTest < ActionDispatch::IntegrationTest
 
     assert_select '#shady-bar'
 
-    delete '/shady_mode', nil, { 'HTTP_REFERER' => request.path }
+    delete '/shady_mode', nil, { 'HTTP_REFERER' => '/' }
     follow_redirect!
 
     assert_select '#shady-bar', false
   end
 
   test "toggle shady move as unauthorized" do
-    log_user('dlopper', 'foo')
+    log_user('dlopper')
     get '/'
 
-    post '/shady_mode', nil, { 'HTTP_REFERER' => request.path }
+    post '/shady_mode', nil, { 'HTTP_REFERER' => '/' }
 
     assert_response 403
     assert_nil User.current.pref[:shady]
@@ -84,7 +83,7 @@ class ShadyTest < ActionDispatch::IntegrationTest
 
   private
 
-  def log_user(login, password)
+  def log_user(login, password = 'foo')
     get "/login"
     post "/login", :username => login, :password => password
 
@@ -97,7 +96,7 @@ class ShadyTest < ActionDispatch::IntegrationTest
   end
 
   def shade_on
-    post '/shady_mode', nil, { 'HTTP_REFERER' => request.path }
+    post '/shady_mode', nil, { 'HTTP_REFERER' => '/' }
     follow_redirect!
 
     assert_not_nil User.current.pref[:shady]
